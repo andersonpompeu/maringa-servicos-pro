@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import toolsImage from "@/assets/tools.jpg";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const services = [
   {
@@ -55,10 +56,15 @@ const services = [
 ];
 
 const Services = () => {
+  const { ref, isVisible } = useScrollAnimation();
+
   return (
     <section id="servicos" className="py-20 md:py-28 bg-background">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div 
+          ref={ref}
+          className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
           <span className="inline-block px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-medium mb-4">
             Nossos Serviços
           </span>
@@ -72,10 +78,15 @@ const Services = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {services.map((service) => (
+          {services.map((service, index) => (
             <Card 
               key={service.title} 
               className="group hover:shadow-lg transition-all duration-300 border-border bg-card hover:-translate-y-1"
+              style={{ 
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition: `all 0.5s ease-out ${index * 100}ms`
+              }}
             >
               <CardContent className="p-6">
                 <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
@@ -97,6 +108,7 @@ const Services = () => {
             src={toolsImage} 
             alt="Ferramentas profissionais para reparos residenciais" 
             className="w-full h-64 md:h-80 object-cover"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/60 flex items-center">
             <div className="container mx-auto px-8">

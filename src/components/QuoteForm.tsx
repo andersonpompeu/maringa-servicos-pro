@@ -7,6 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Send, Phone, MapPin, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { formatPhone, validatePhone } from "@/hooks/usePhoneMask";
 
 const serviceOptions = [
   "Hidráulica",
@@ -22,7 +24,9 @@ const serviceOptions = [
 
 const QuoteForm = () => {
   const { toast } = useToast();
+  const { ref, isVisible } = useScrollAnimation();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneError, setPhoneError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -31,11 +35,27 @@ const QuoteForm = () => {
     message: "",
   });
 
+  const handlePhoneChange = (value: string) => {
+    const formatted = formatPhone(value);
+    setFormData({ ...formData, phone: formatted });
+    
+    if (formatted && !validatePhone(formatted)) {
+      setPhoneError("Telefone inválido");
+    } else {
+      setPhoneError("");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validatePhone(formData.phone)) {
+      setPhoneError("Digite um telefone válido");
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     toast({
@@ -56,7 +76,10 @@ const QuoteForm = () => {
   return (
     <section id="orcamento" className="py-20 md:py-28 bg-secondary/5">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div 
+          ref={ref}
+          className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
           <span className="inline-block px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-medium mb-4">
             Orçamento Grátis
           </span>
@@ -151,9 +174,13 @@ const QuoteForm = () => {
                       type="tel"
                       placeholder="(44) 99999-9999"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) => handlePhoneChange(e.target.value)}
+                      className={phoneError ? "border-destructive" : ""}
                       required
                     />
+                    {phoneError && (
+                      <p className="text-destructive text-sm">{phoneError}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
