@@ -27,7 +27,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6">
             <button
               onClick={() => scrollToSection("servicos")}
               className="text-foreground/80 hover:text-primary transition-colors font-medium"
@@ -41,14 +41,26 @@ const Header = () => {
               Sobre
             </button>
             <button
+              onClick={() => scrollToSection("galeria")}
+              className="text-foreground/80 hover:text-primary transition-colors font-medium"
+            >
+              Galeria
+            </button>
+            <button
               onClick={() => scrollToSection("depoimentos")}
               className="text-foreground/80 hover:text-primary transition-colors font-medium"
             >
               Depoimentos
             </button>
+            <button
+              onClick={() => scrollToSection("faq")}
+              className="text-foreground/80 hover:text-primary transition-colors font-medium"
+            >
+              FAQ
+            </button>
             <Button onClick={() => scrollToSection("orcamento")} size="lg">
               <Phone className="w-4 h-4 mr-2" />
-              Solicitar Orçamento
+              Orçamento
             </Button>
           </nav>
 
@@ -79,10 +91,22 @@ const Header = () => {
                 Sobre
               </button>
               <button
+                onClick={() => scrollToSection("galeria")}
+                className="text-foreground/80 hover:text-primary transition-colors font-medium text-left py-2"
+              >
+                Galeria
+              </button>
+              <button
                 onClick={() => scrollToSection("depoimentos")}
                 className="text-foreground/80 hover:text-primary transition-colors font-medium text-left py-2"
               >
                 Depoimentos
+              </button>
+              <button
+                onClick={() => scrollToSection("faq")}
+                className="text-foreground/80 hover:text-primary transition-colors font-medium text-left py-2"
+              >
+                FAQ
               </button>
               <Button onClick={() => scrollToSection("orcamento")} className="w-full">
                 <Phone className="w-4 h-4 mr-2" />
