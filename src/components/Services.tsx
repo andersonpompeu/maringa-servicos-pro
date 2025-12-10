@@ -65,11 +65,12 @@ const Services = () => {
           ref={ref}
           className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
-          <span className="inline-block px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">
             Nossos Serviços
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">
-            Soluções Completas para Sua Casa
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mb-4">
+            Soluções Completas para{" "}
+            <span className="text-primary">Sua Casa</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Oferecemos uma ampla variedade de serviços para resolver qualquer problema 
@@ -81,36 +82,42 @@ const Services = () => {
           {services.map((service, index) => (
             <Card 
               key={service.title} 
-              className="group hover:shadow-lg transition-all duration-300 border-border bg-card hover:-translate-y-1"
+              className="group hover-lift border-border/50 bg-card overflow-hidden"
               style={{ 
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
                 transition: `all 0.5s ease-out ${index * 100}ms`
               }}
             >
-              <CardContent className="p-6">
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                  <service.icon className="w-7 h-7 text-primary group-hover:text-primary-foreground transition-colors" />
+              <CardContent className="p-6 relative">
+                {/* Gradient border effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                <div className="relative z-10">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
+                    <service.icon className="w-7 h-7 text-primary-foreground" />
+                  </div>
+                  <h3 className="text-xl font-bold text-card-foreground mb-2 group-hover:text-primary transition-colors">
+                    {service.title}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {service.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-card-foreground mb-2">
-                  {service.title}
-                </h3>
-                <p className="text-muted-foreground">
-                  {service.description}
-                </p>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        <div className="relative rounded-2xl overflow-hidden">
+        {/* Featured Banner */}
+        <div className="relative rounded-2xl overflow-hidden shadow-xl">
           <img 
             src={toolsImage} 
             alt="Ferramentas profissionais para reparos residenciais" 
             className="w-full h-64 md:h-80 object-cover"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/60 flex items-center">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/70 flex items-center">
             <div className="container mx-auto px-8">
               <h3 className="text-2xl md:text-3xl font-serif font-bold text-primary-foreground mb-2">
                 Equipamentos Profissionais

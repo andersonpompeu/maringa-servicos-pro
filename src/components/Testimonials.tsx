@@ -2,6 +2,7 @@ import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useCountUp } from "@/hooks/useCountUp";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
@@ -39,8 +40,17 @@ const testimonials = [
   },
 ];
 
+const stats = [
+  { value: 500, suffix: "+", label: "Serviços Realizados" },
+  { value: 98, suffix: "%", label: "Clientes Satisfeitos" },
+  { value: 5, suffix: "+", label: "Anos de Experiência" },
+  { value: 24, suffix: "h", label: "Resposta Rápida" },
+];
+
 const Testimonials = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const { ref: statsRef, isVisible: statsVisible } = useScrollAnimation(0.3);
+  
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start" },
     [Autoplay({ delay: 5000, stopOnInteraction: false })]
@@ -64,18 +74,40 @@ const Testimonials = () => {
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
+  // Stats with count-up
+  const StatItem = ({ stat, index }: { stat: typeof stats[0]; index: number }) => {
+    const count = useCountUp(stat.value, 2000, true, statsVisible);
+    
+    return (
+      <div 
+        className="text-center"
+        style={{
+          opacity: statsVisible ? 1 : 0,
+          transform: statsVisible ? 'translateY(0)' : 'translateY(20px)',
+          transition: `all 0.5s ease-out ${index * 150}ms`
+        }}
+      >
+        <p className="text-3xl md:text-5xl font-bold text-primary mb-2 font-serif">
+          {count}{stat.suffix}
+        </p>
+        <p className="text-muted-foreground text-sm">{stat.label}</p>
+      </div>
+    );
+  };
+
   return (
-    <section id="depoimentos" className="py-20 md:py-28 bg-card">
+    <section id="depoimentos" className="py-20 md:py-28 bg-muted/30">
       <div className="container mx-auto px-4">
         <div 
           ref={ref}
           className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
-          <span className="inline-block px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">
             Depoimentos
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">
-            O Que Nossos Clientes Dizem
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mb-4">
+            O Que Nossos Clientes{" "}
+            <span className="text-primary">Dizem</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             A satisfação dos nossos clientes é nossa maior recompensa. Confira alguns depoimentos.
@@ -88,24 +120,36 @@ const Testimonials = () => {
             <div className="flex gap-6">
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="flex-[0_0_100%] md:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)] min-w-0">
-                  <Card className="border-border bg-background hover:shadow-lg transition-shadow duration-300 h-full">
+                  <Card className="border-border/50 bg-card hover:shadow-xl transition-all duration-300 h-full group">
                     <CardContent className="p-6">
+                      {/* Stars */}
                       <div className="flex items-center gap-1 mb-4">
                         {Array.from({ length: testimonial.rating }).map((_, i) => (
-                          <Star key={i} className="w-5 h-5 fill-primary text-primary" />
+                          <Star 
+                            key={i} 
+                            className="w-5 h-5 fill-secondary text-secondary"
+                            style={{ animationDelay: `${i * 100}ms` }}
+                          />
                         ))}
                       </div>
                       
+                      {/* Quote */}
                       <div className="relative mb-4">
-                        <Quote className="w-8 h-8 text-primary/20 absolute -top-2 -left-2" />
-                        <p className="text-card-foreground relative z-10 pl-4">
+                        <Quote className="w-10 h-10 text-primary/10 absolute -top-2 -left-2" />
+                        <p className="text-card-foreground relative z-10 pl-4 leading-relaxed">
                           {testimonial.text}
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t border-border">
-                        <p className="font-bold text-foreground">{testimonial.name}</p>
-                        <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+                      {/* Author */}
+                      <div className="pt-4 border-t border-border flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-primary-foreground font-bold">
+                          {testimonial.name.charAt(0)}
+                        </div>
+                        <div>
+                          <p className="font-bold text-foreground">{testimonial.name}</p>
+                          <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -121,7 +165,7 @@ const Testimonials = () => {
               size="icon"
               onClick={scrollPrev}
               disabled={!canScrollPrev}
-              className="rounded-full"
+              className="rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               <ChevronLeft className="w-5 h-5" />
             </Button>
@@ -130,27 +174,20 @@ const Testimonials = () => {
               size="icon"
               onClick={scrollNext}
               disabled={!canScrollNext}
-              className="rounded-full"
+              className="rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               <ChevronRight className="w-5 h-5" />
             </Button>
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 max-w-4xl mx-auto">
-          {[
-            { value: "500+", label: "Serviços Realizados" },
-            { value: "98%", label: "Clientes Satisfeitos" },
-            { value: "5+", label: "Anos de Experiência" },
-            { value: "24h", label: "Resposta Rápida" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <p className="text-3xl md:text-4xl font-bold text-primary mb-2">
-                {stat.value}
-              </p>
-              <p className="text-muted-foreground text-sm">{stat.label}</p>
-            </div>
+        {/* Stats with Count-Up */}
+        <div 
+          ref={statsRef}
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 max-w-4xl mx-auto"
+        >
+          {stats.map((stat, index) => (
+            <StatItem key={stat.label} stat={stat} index={index} />
           ))}
         </div>
       </div>
