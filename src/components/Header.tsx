@@ -46,7 +46,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            {["Serviços", "Sobre", "Galeria", "Depoimentos", "FAQ"].map((item) => (
+            {["Serviços", "Sobre", "Regiões", "Galeria", "Depoimentos", "FAQ"].map((item) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))}
@@ -89,7 +89,7 @@ const Header = () => {
           }`}
         >
           <nav className="flex flex-col gap-2 pt-4 border-t border-border">
-            {["Serviços", "Sobre", "Galeria", "Depoimentos", "FAQ"].map((item, index) => (
+            {["Serviços", "Sobre", "Regiões", "Galeria", "Depoimentos", "FAQ"].map((item, index) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))}
