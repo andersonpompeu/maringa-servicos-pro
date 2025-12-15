@@ -18,7 +18,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="hero" className="relative min-h-[70vh] md:min-h-[85vh] lg:min-h-screen flex items-center pt-14 md:pt-16 lg:pt-20">
+    <section id="hero" className="relative min-h-[40vh] md:min-h-[85vh] lg:min-h-screen flex items-center pt-14 md:pt-16 lg:pt-20">
       {/* Background Image with Parallax Effect */}
       <div
         className="absolute inset-0 z-0"
