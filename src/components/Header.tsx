@@ -33,13 +33,13 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-14 md:h-16 lg:h-20">
           {/* Logo */}
-          <div className="flex items-center gap-3 group cursor-pointer" onClick={() => scrollToSection("hero")}>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Wrench className="w-5 h-5 text-primary-foreground" />
+          <div className="flex items-center gap-2 md:gap-3 group cursor-pointer" onClick={() => scrollToSection("hero")}>
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Wrench className="w-4 h-4 md:w-5 md:h-5 text-primary-foreground" />
             </div>
-            <span className="font-serif text-lg md:text-xl font-bold text-foreground">
+            <span className="font-serif text-base md:text-lg lg:text-xl font-bold text-foreground">
               Marido de Aluguel
             </span>
           </div>
@@ -84,16 +84,16 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         <div 
-          className={`md:hidden overflow-hidden transition-all duration-300 ${
-            isMenuOpen ? "max-h-96 pb-4" : "max-h-0"
+          className={`md:hidden overflow-hidden transition-all duration-200 ${
+            isMenuOpen ? "max-h-96 pb-3" : "max-h-0"
           }`}
         >
-          <nav className="flex flex-col gap-2 pt-4 border-t border-border">
+          <nav className="flex flex-col gap-1 pt-3 border-t border-border">
             {["Serviços", "Sobre", "Regiões", "Galeria", "Depoimentos", "FAQ"].map((item, index) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))}
-                className="text-foreground/80 hover:text-foreground hover:bg-muted transition-all font-medium text-left py-3 px-4 rounded-lg"
+                className="text-foreground/80 hover:text-foreground hover:bg-muted transition-all text-sm font-medium text-left py-2.5 px-3 rounded-md"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 {item}
